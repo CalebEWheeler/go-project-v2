@@ -9,16 +9,21 @@ SETUP:
 2. Next create a new directory named 'config' and inside of that directory create a new file named 'config.go' 
 
 3. Paste the lines 16-20 into 'config.go' and replace these values in the string returned in MySQLConnectCred()
-        - ( 'root' with the name of your MySQL user ) 
-        - ( 'password' with the password of your MySQL user )
-        - ( 'database_name' with the database_name you created )
-  
+        
   package config
 
-  func MySQLConnectCred() string {
-	  return "root:password@tcp(127.0.0.1:3306)/database_name"
+  import "fmt"
+
+  const (
+	  username = "YOUR_MYSQL_USERNAME"
+	  password = "YOUR_MYSQL_PASSWORD"
+	  hostname = "127.0.0.1:3306"
+  )
+
+  func DSNString(dbName string) string {
+	  return fmt.Sprintf("%s:%s@tcp(%s)/", username, password, hostname)
   }
 
-4.   
+  
 
 

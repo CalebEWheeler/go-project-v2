@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/CalebEWheeler/go-project-v2/config"
 	_ "github.com/go-sql-driver/mysql"
@@ -11,10 +12,11 @@ import (
 func InitDatabase() {
 	fmt.Println("Go MySQL Tutorial")
 
-	db, err := sql.Open("mysql", config.MySQLConnectCred())
+	db, err := sql.Open("mysql", config.DSNString(""))
 
 	if err != nil {
-		panic(err.Error())
+		log.Printf("Error %s when opening DB", err)
+		return
 	}
 
 	defer db.Close()
