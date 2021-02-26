@@ -22,17 +22,18 @@ SETUP:
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s", username, password, hostname, dbName)
 }
 
-4. If you would like to change the name of the database to be created from 'person' you have the ability to do so. Navigate to 'database.go' to line 49 where you will see the func CreateDatabase() called, change the second argument "person" to what you would like the database name to be. 
+4. If you would like to change the name of the database to be created from "rest_api" you have the ability to do so. In main.go, navigate to the function InitDatabase() and pass in the desired name. 
 
-  Here is an example if you would like the database name to be "office_personel": CreateDatabase(db, "office_personel") 
+  Here is an example if you would like the database name to be "office_personel": InitDatabase("office_personel") 
 
   //If you would like to check, log into MySQL from the terminal and run the Query: SHOW DATABASES; to see your newly created database
 
   //If you would like to delete the database, because you would like to rename it more semantically. Log into MySQL from the terminal and run the Query: DROP DATABASE IF EXISTS office_personel;  
 
-  * Also make sure to visit lines ( 61-63 ) to make changes to the set database settings I implemented. Your local machine may have other connections running, so make the changes accordingly. You can check how many connections your MySQL server can handle by running this MySQL Query: SHOW VARIABLES LIKE 'max_connections';
-
   
+5. Next navigate to database/database.go and visit lines ( 61-63 ) to make changes to the set database settings I implemented. Your local machine may have other connections running, so make the changes accordingly. You can check how many connections your MySQL server can handle by running this MySQL Query: SHOW VARIABLES LIKE 'max_connections';
+
+
 
   
 

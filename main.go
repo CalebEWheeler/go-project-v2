@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	database.InitDatabase()
+	database.InitDatabase("rest_api")
 }

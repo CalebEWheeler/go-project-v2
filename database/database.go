@@ -17,6 +17,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// func CreatePersonTable(db *sql.DB, tblName string) {
+// 	query := "CREATE TABLE IF NOT EXISTS " +
+// }
+
 func CreateDatabase(db *sql.DB, dbName string) {
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelfunc()
@@ -33,7 +37,7 @@ func CreateDatabase(db *sql.DB, dbName string) {
 	log.Printf("rows affected %d\n", no)
 }
 
-func InitDatabase() {
+func InitDatabase(dbName string) {
 
 	//lines ( 39-47 ) validate if our DSN is correct
 	dbConn, err := sql.Open("mysql", config.DSNString(""))
@@ -47,10 +51,10 @@ func InitDatabase() {
 	fmt.Println("Successfully Connected to MySQL database")
 
 	//line ( 50 ) will take the 'database connection' and a string for the desired 'database name' as arguments to create a new database.
-	CreateDatabase(dbConn, "people")
+	CreateDatabase(dbConn, dbName)
 
 	//lines ( 53-58 ) will now validate if our DSN is correct in MySQL with our newly created database name passed as a string argument to config.DSNString()
-	dbConn, err = sql.Open("mysql", config.DSNString("people"))
+	dbConn, err = sql.Open("mysql", config.DSNString(dbName))
 	if err != nil {
 		log.Printf("Error %s when opening DB", err)
 		return
@@ -62,6 +66,7 @@ func InitDatabase() {
 	dbConn.SetMaxIdleConns(20)
 	dbConn.SetConnMaxLifetime(time.Minute * 5)
 
+	// lines ( 66-73 ) will utilize PingContext() to verify the actual connection to the database by pinging the DB.
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelfunc()
 	err = dbConn.PingContext(ctx)
@@ -69,5 +74,5 @@ func InitDatabase() {
 		log.Printf("Errors %s pinging DB", err)
 		return
 	}
-	log.Printf("Connected to DB %s successfully", "people")
+	log.Printf("Connected to DB %s successfully", dbName)
 }
