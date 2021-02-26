@@ -61,4 +61,13 @@ func InitDatabase() {
 	dbConn.SetMaxOpenConns(20)
 	dbConn.SetMaxIdleConns(20)
 	dbConn.SetConnMaxLifetime(time.Minute * 5)
+
+	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancelfunc()
+	err = dbConn.PingContext(ctx)
+	if err != nil {
+		log.Printf("Errors %s pinging DB", err)
+		return
+	}
+	log.Printf("Connected to DB %s successfully", "people")
 }
