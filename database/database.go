@@ -17,14 +17,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// func CreatePersonTable(db *sql.DB, tblName string) {
-// 	query := "CREATE TABLE IF NOT EXISTS " +
-// }
-
-func CreateDatabase(db *sql.DB, dbName string) {
+func CreateDatabase(dbConn *sql.DB, dbName string) {
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelfunc()
-	res, err := db.ExecContext(ctx, "CREATE DATABASE IF NOT EXISTS "+dbName)
+	res, err := dbConn.ExecContext(ctx, "CREATE DATABASE IF NOT EXISTS "+dbName)
 	if err != nil {
 		log.Printf("Error %s when creating DB\n", err)
 		return
@@ -37,7 +33,7 @@ func CreateDatabase(db *sql.DB, dbName string) {
 	log.Printf("rows affected %d\n", no)
 }
 
-func InitDatabase(dbName string) {
+func InitDatabase(dbName string, tblName string) {
 
 	//lines ( 39-47 ) validate if our DSN is correct
 	dbConn, err := sql.Open("mysql", config.DSNString(""))
@@ -75,4 +71,6 @@ func InitDatabase(dbName string) {
 		return
 	}
 	log.Printf("Connected to DB %s successfully", dbName)
+
+	CreatePersonTable(dbConn, tblName)
 }
