@@ -24,6 +24,16 @@ SETUP:
 	  return fmt.Sprintf("%s:%s@tcp(%s)/", username, password, hostname)
   }
 
+4. If you would like to change the name of the database to be created from 'person' you have the ability to do so. Navigate to 'database.go' to line 43 where you will see the func CreateDatabase called, change the second argument 'person' to what you would like the database name to be. 
+
+  Here is an example if you would like the database name to be 'office_personel': CreateDatabase(db, "office_personel") 
+
+  //If you would like to check, log into MySQL from the terminal and run the Query 'SHOW DATABASES;' to see your newly created database
+
+  //If you would like to delete the database because you would like to rename it more semantically, log into MySQL from the terminal and run the Query 'DROP DATABASE IF EXISTS office_personel;'  
+
+  
+
   
 
 
