@@ -9,7 +9,7 @@ import (
 
 var prepend = "/api/v1/"
 
-func setupRoutes() {
+func SetupRoutes() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc(prepend+"/", getPeople).Methods("GET")
 	router.HandleFunc(prepend+"/person/{id}", getPerson).Methods("GET")
