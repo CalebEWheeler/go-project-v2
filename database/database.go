@@ -72,5 +72,6 @@ func InitDatabase(dbName string, tblName string) {
 	}
 	log.Printf("Connected to DB %s successfully", dbName)
 
+	// line ( 76 ) will take in the dbConn as the first argument and also a string value for the tblName as the second argument to create a new table with standard 'user' values.
 	CreatePersonTable(dbConn, tblName)
 }
