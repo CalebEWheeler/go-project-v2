@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -66,7 +67,29 @@ func getPerson(res http.ResponseWriter, req *http.Request) {
 }
 
 func createPerson(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "created a person")
+	res.Header().Set("Content-Type", "application/json")
+
+	stmt, err := database.Connect().Prepare("INSERT INTO " + tblName + "(name, age) VALUES(?, ?)")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	keyVal := make(map[string]string)
+	json.Unmarshal(body, &keyVal)
+	name := keyVal["name"]
+	age := keyVal["age"]
+
+	_, err = stmt.Exec(name, age)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Fprintf(res, "New person was created")
 }
 
 func updatePerson(res http.ResponseWriter, req *http.Request) {

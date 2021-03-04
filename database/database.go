@@ -21,10 +21,6 @@ var dbName = "rest_api"
 var tblName = "person"
 var DB *sql.DB
 
-// func DbName() string {
-// 	return "rest_api"
-// }
-
 func CreateDatabase(dbConn *sql.DB, dbName string) {
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelfunc()
