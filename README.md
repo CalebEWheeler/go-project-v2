@@ -22,7 +22,8 @@ SETUP:
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", username, password, hostname, dbName)
 }
 
-4. If you would like to change the name of the database and table to be created from "rest_api" and "person" you have the ability to do so. In database/database.go, navigate to the declared variables "dbName" and "tblName" and change the string values to the desired names. Also make sure to navigate to controllers/handlers.go and locate the declared variable tblName and make it's string value to be the same as tblName in database/database.go. 
+4. If you would like to change the name of the database and table to be created from "rest_api" and "person" you have the ability to do so. In database/database.go, navigate to the declared variables "dbName" and "tblName" and change the string values to the desired names. 
+  * Also make sure to navigate to controllers/handlers.go and locate the declared variable tblName and make it's string value to be the same as tblName in database/database.go. 
 
   Here is an example if you would like the database name to be "office_personel" and the tblName to be "employee":  
   
