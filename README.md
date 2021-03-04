@@ -19,7 +19,7 @@ SETUP:
   )
 
   func DSNString(dbName string) string {
-	return fmt.Sprintf("%s:%s@tcp(%s)/%s", username, password, hostname, dbName)
+	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", username, password, hostname, dbName)
 }
 
 4. If you would like to change the name of the database to be created from "rest_api" you have the ability to do so. In main.go, navigate to the function InitDatabase() and pass in the desired database name as the first argument. If you would like to change the name of a person/user table modify the second argument. 
