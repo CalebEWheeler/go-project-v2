@@ -121,5 +121,19 @@ func updatePerson(res http.ResponseWriter, req *http.Request) {
 }
 
 func deletePerson(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "delete a person")
+	res.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(req)
+
+	stmt, err := database.Connect().Prepare("DELETE FROM " + tblName + " WHERE id=?")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = stmt.Exec(params["id"])
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Fprintf(res, "Person with ID = %s was deleted", params["id"])
 }
