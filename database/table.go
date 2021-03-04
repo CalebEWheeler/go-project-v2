@@ -11,11 +11,12 @@ import (
 func CreatePersonTable(dbConn *sql.DB, tblName string) {
 	query := fmt.Sprintf(
 		`CREATE TABLE IF NOT EXISTS %s(
-		id int primary key auto_increment,
-		name text, 
+		id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		name text NOT NULL, 
 		age int,
-		created_at datetime default CURRENT_TIMESTAMP,
-		updated_at datetime default CURRENT_TIMESTAMP
+		created_at DATETIME NOT NULL DEFAULT NOW(),
+		updated_at DATETIME NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+		PRIMARY KEY (id)
 		)`, tblName)
 
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
