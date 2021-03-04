@@ -7,25 +7,26 @@ import (
 	"time"
 
 	"github.com/CalebEWheeler/go-project-v2/database"
+	"github.com/gorilla/mux"
 )
 
 type Person struct {
-	ID        int       `json:"person_id"`
-	Name      string    `json:"person_name"`
-	Age       int       `json:"person_age"`
+	ID        int       `json:"id"`
+	Name      string    `json:"name"`
+	Age       int       `json:"age"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+var tblName = "person"
 var err error
 
-func getPeople(w http.ResponseWriter, r *http.Request) {
-	// fmt.Fprintf(w, "Reached all people")
-	w.Header().Set("Content-Type", "application/json")
+func getPeople(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
 
 	var people []Person
 
-	result, err := database.Connect().Query("SELECT * FROM person")
+	result, err := database.Connect().Query("SELECT * FROM " + tblName)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -40,23 +41,38 @@ func getPeople(w http.ResponseWriter, r *http.Request) {
 		}
 		people = append(people, person)
 	}
-	// fmt.Println(people)
-	json.NewEncoder(w).Encode(people)
-
+	json.NewEncoder(res).Encode(people)
 }
 
-func getPerson(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "got a person")
+func getPerson(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(req)
+
+	result, err := database.Connect().Query("SELECT * FROM person WHERE id=" + params["id"])
+	if err != nil {
+		panic(err.Error())
+	}
+	defer result.Close()
+
+	var person Person
+
+	for result.Next() {
+		err := result.Scan(&person.ID, &person.Name, &person.Age, &person.CreatedAt, &person.UpdatedAt)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+	json.NewEncoder(res).Encode(person)
 }
 
-func createPerson(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "created a person")
+func createPerson(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(res, "created a person")
 }
 
-func updatePerson(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "updated a person")
+func updatePerson(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(res, "updated a person")
 }
 
-func deletePerson(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "delete a person")
+func deletePerson(res http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(res, "delete a person")
 }

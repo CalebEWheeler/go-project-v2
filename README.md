@@ -22,11 +22,16 @@ SETUP:
 	return fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", username, password, hostname, dbName)
 }
 
-4. If you would like to change the name of the database to be created from "rest_api" you have the ability to do so. In main.go, navigate to the function InitDatabase() and pass in the desired database name as the first argument. If you would like to change the name of a person/user table modify the second argument. 
+4. If you would like to change the name of the database and table to be created from "rest_api" and "person" you have the ability to do so. In database/database.go, navigate to the declared variables "dbName" and "tblName" and change the string values to the desired names. Also make sure to navigate to controllers/handlers.go and locate the declared variable tblName and make it's string value to be the same as tblName in database/database.go. 
 
-  Here is an example if you would like the database name to be "office_personel": InitDatabase("office_personel") 
+  Here is an example if you would like the database name to be "office_personel" and the tblName to be "employee":  
+  
+    var dbName = "office_personel"
+    var tblName = "employee"
 
-  //If you would like to check, log into MySQL from the terminal and run the Query: SHOW DATABASES; to see your newly created database
+  //If you would like to check, log into MySQL from the terminal and run these two Queries
+    1. To see your newly created database - SHOW DATABASES; 
+    2. To see your newly created 'employee' table - DESCRIBE employee;
 
   //If you would like to delete the database, because you would like to rename it more semantically. Log into MySQL from the terminal and run the Query: DROP DATABASE IF EXISTS office_personel;  
 
