@@ -2,11 +2,12 @@ package main
 
 import (
 	"github.com/CalebEWheeler/go-project-v2/controllers"
-	"github.com/CalebEWheeler/go-project-v2/database"
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var dbName = "rest_api"
+var tblName = "person"
+
 func main() {
-	database.InitDatabase("rest_api", "person")
 	controllers.SetupRoutes()
 }

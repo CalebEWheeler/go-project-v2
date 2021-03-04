@@ -17,6 +17,14 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+var dbName = "rest_api"
+var tblName = "person"
+var DB *sql.DB
+
+// func DbName() string {
+// 	return "rest_api"
+// }
+
 func CreateDatabase(dbConn *sql.DB, dbName string) {
 	ctx, cancelfunc := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancelfunc()
@@ -33,7 +41,7 @@ func CreateDatabase(dbConn *sql.DB, dbName string) {
 	log.Printf("rows affected %d\n", no)
 }
 
-func InitDatabase(dbName string, tblName string) {
+func InitDatabase() {
 
 	//lines ( 39-47 ) validate if our DSN is correct
 	dbConn, err := sql.Open("mysql", config.DSNString(""))
@@ -74,4 +82,13 @@ func InitDatabase(dbName string, tblName string) {
 
 	// line ( 76 ) will take in the dbConn as the first argument and also a string value for the tblName as the second argument to create a new table with standard 'user' values.
 	CreatePersonTable(dbConn, tblName)
+}
+
+func Connect() *sql.DB {
+	db, err := sql.Open("mysql", config.DSNString(dbName))
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return db
 }
