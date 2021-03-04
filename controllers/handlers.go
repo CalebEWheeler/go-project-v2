@@ -49,7 +49,7 @@ func getPerson(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(req)
 
-	result, err := database.Connect().Query("SELECT * FROM person WHERE id=" + params["id"])
+	result, err := database.Connect().Query("SELECT * FROM " + tblName + " WHERE id=" + params["id"])
 	if err != nil {
 		panic(err.Error())
 	}
@@ -93,7 +93,31 @@ func createPerson(res http.ResponseWriter, req *http.Request) {
 }
 
 func updatePerson(res http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(res, "updated a person")
+	res.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(req)
+
+	stmt, err := database.Connect().Prepare("UPDATE " + tblName + " SET name = ?, age = ? WHERE id=?")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	keyVal := make(map[string]string)
+	json.Unmarshal(body, &keyVal)
+	newName := keyVal["name"]
+	newAge := keyVal["age"]
+
+	_, err = stmt.Exec(newName, newAge, params["id"])
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Fprintf(res, "Person with ID = %s was updated", params["id"])
 }
 
 func deletePerson(res http.ResponseWriter, req *http.Request) {

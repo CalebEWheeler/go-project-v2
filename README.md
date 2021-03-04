@@ -40,7 +40,13 @@ SETUP:
 5. Next navigate to database/database.go and visit lines ( 61-63 ) to make changes to the set database settings I implemented. Your local machine may have other connections running, so make the changes accordingly. You can check how many connections your MySQL server can handle by running this MySQL Query: SHOW VARIABLES LIKE 'max_connections';
 
 
+//Notes for Caleb getting into testing purposes...
+1. make sure you pass in a string value for all key-value pairs in the body to test creating a person
 
+ex: body {
+  "name": "chester",
+  "age": "33"
+}
   
 
 
