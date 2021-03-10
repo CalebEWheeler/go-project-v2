@@ -97,6 +97,8 @@ func createPerson(res http.ResponseWriter, req *http.Request) {
 		panic(err.Error())
 	}
 
+	//may be able to create query to return the newly created person in JSON format and then run a test case to check if the expected and resp.Body.String() values are equal...
+
 	fmt.Fprintf(res, "New person was created")
 }
 

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -68,6 +69,26 @@ func TestGetPerson(t *testing.T) {
 				t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
 			}
 		}
+	}
+}
+
+func TestCreatePerson(t *testing.T) {
+	var jsonStr = []byte(`{"name":"Betsy","age":"29"}`)
+
+	req, err := http.NewRequest("POST", prepend+"person", bytes.NewBuffer(jsonStr))
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	respRec := httptest.NewRecorder()
+	handler := http.HandlerFunc(createPerson)
+	handler.ServeHTTP(respRec, req)
+	if status := respRec.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+	expected := "New person was created"
+	if respRec.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
 	}
 
 }
