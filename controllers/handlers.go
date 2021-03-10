@@ -48,7 +48,7 @@ func getPeople(res http.ResponseWriter, req *http.Request) {
 func getPerson(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(req)
-	fmt.Println(params["id"])
+	fmt.Printf("getPerson() URL: %v", req.URL)
 
 	result, err := database.Connect().Query("SELECT * FROM " + tblName + " WHERE id=" + params["id"])
 	if err != nil {
