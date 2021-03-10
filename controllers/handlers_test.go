@@ -44,32 +44,20 @@ func TestGetPerson(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// IDs := []string{"1", "2"}
-	// for _, id := range IDs {
-	// url := ts.URL + prepend + id
-	// resp, err := http.Get(url)
-	// if err != nil {
-	// 	t.Fatal(err)
-
-	// req, err := http.NewRequest("GET", prepend+"/person/1", nil)
-	// if err != nil {
-	// 	t.Fatal(err)
-	// }
 	fmt.Printf("TestGetPerson(): %v\n", req.URL)
 	respRec := httptest.NewRecorder()
 	handler := http.HandlerFunc(getPerson)
 	handler.ServeHTTP(respRec, req)
 
-	// if status := respRec.Code; status != http.StatusOK {
-	// 	t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
-	// }
+	if status := respRec.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
 
 	// if id == "1" {
-	// 	expected := `[{"id":1,"name":"Caleb","age":26,"created_at":"2021-03-04T15:05:12Z","updated_at":"2021-03-04T15:16:37Z"}]`
-	// 	if strings.TrimRight(respRec.Body.String(), "\n") != expected {
-	// 		t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
-	// 	}
+	expected := `{"id":1,"name":"Caleb","age":26,"created_at":"2021-03-04T15:05:12Z","updated_at":"2021-03-04T15:16:37Z"}`
+	if strings.TrimRight(respRec.Body.String(), "\n") != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
+	}
 	// }
 	// }
 

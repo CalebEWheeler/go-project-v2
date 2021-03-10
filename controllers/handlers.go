@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/CalebEWheeler/go-project-v2/database"
@@ -47,10 +48,16 @@ func getPeople(res http.ResponseWriter, req *http.Request) {
 
 func getPerson(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
-	params := mux.Vars(req)
-	fmt.Printf("getPerson() URL: %v", req.URL)
+	// params := mux.Vars(req)
+	URLString := req.URL.String()
+	// fmt.Printf("getPerson() URL: %v\n", URLString)
+	URLSplit := strings.Split(URLString, "/")
+	idVal := URLSplit[len(URLSplit)-1]
+	fmt.Printf("%s", idVal)
 
-	result, err := database.Connect().Query("SELECT * FROM " + tblName + " WHERE id=" + params["id"])
+	// var idVal string = req.URL.String()
+	// fmt.Printf("%s", idVal)
+	result, err := database.Connect().Query("SELECT * FROM " + tblName + " WHERE id=" + idVal)
 	if err != nil {
 		panic(err.Error())
 	}
