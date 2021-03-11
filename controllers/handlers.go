@@ -105,7 +105,10 @@ func createPerson(res http.ResponseWriter, req *http.Request) {
 func updatePerson(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 
-	params := mux.Vars(req)
+	URLString := req.URL.String()
+	// fmt.Printf("getPerson() URL: %v\n", URLString)
+	URLSplit := strings.Split(URLString, "/")
+	idVal := URLSplit[len(URLSplit)-1]
 
 	stmt, err := database.Connect().Prepare("UPDATE " + tblName + " SET name = ?, age = ? WHERE id=?")
 	if err != nil {
@@ -122,12 +125,12 @@ func updatePerson(res http.ResponseWriter, req *http.Request) {
 	newName := keyVal["name"]
 	newAge := keyVal["age"]
 
-	_, err = stmt.Exec(newName, newAge, params["id"])
+	_, err = stmt.Exec(newName, newAge, idVal)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Fprintf(res, "Person with ID = %s was updated", params["id"])
+	fmt.Fprintf(res, "Person with ID = %s was updated", idVal)
 }
 
 func deletePerson(res http.ResponseWriter, req *http.Request) {

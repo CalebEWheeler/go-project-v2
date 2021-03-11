@@ -91,4 +91,8 @@ func TestCreatePerson(t *testing.T) {
 		t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
 	}
 
+	func TestUpdatePerson(t *testing.T) {
+		
+	}
+
 }
