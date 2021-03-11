@@ -47,7 +47,7 @@ func TestGetPerson(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		fmt.Printf("TestGetPerson(): %v\n", req.URL)
+		// fmt.Printf("TestGetPerson(): %v\n", req.URL)
 		respRec := httptest.NewRecorder()
 		handler := http.HandlerFunc(getPerson)
 		handler.ServeHTTP(respRec, req)
@@ -90,9 +90,33 @@ func TestCreatePerson(t *testing.T) {
 	if respRec.Body.String() != expected {
 		t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
 	}
+}
 
-	func TestUpdatePerson(t *testing.T) {
-		
+func TestUpdatePerson(t *testing.T) {
+	var jsonStr = []byte(`{"name":"Betsy","age":"29"}`)
+
+	IDs := []string{"1", "2"}
+	for _, id := range IDs {
+		req, err := http.NewRequest("PUT", prepend+"/person/"+id, bytes.NewBuffer(jsonStr))
+		if err != nil {
+			t.Fatal(err)
+		}
+		req.Header.Set("Content-Type", "application/json")
+		respRec := httptest.NewRecorder()
+		handler := http.HandlerFunc(updatePerson)
+		handler.ServeHTTP(respRec, req)
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		if status := respRec.Code; status != http.StatusOK {
+			t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+		}
+
+		expected := fmt.Sprintf("Person with ID = %s was updated", id)
+		if respRec.Body.String() != expected {
+			t.Errorf("handler returned unexpected body: got %v want %v", respRec.Body.String(), expected)
+		}
+
 	}
-
 }

@@ -106,7 +106,6 @@ func updatePerson(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 
 	URLString := req.URL.String()
-	// fmt.Printf("getPerson() URL: %v\n", URLString)
 	URLSplit := strings.Split(URLString, "/")
 	idVal := URLSplit[len(URLSplit)-1]
 
