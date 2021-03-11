@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/CalebEWheeler/go-project-v2/database"
-	"github.com/gorilla/mux"
 )
 
 type Person struct {
@@ -135,17 +134,19 @@ func updatePerson(res http.ResponseWriter, req *http.Request) {
 func deletePerson(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 
-	params := mux.Vars(req)
+	URLString := req.URL.String()
+	URLSplit := strings.Split(URLString, "/")
+	idVal := URLSplit[len(URLSplit)-1]
 
 	stmt, err := database.Connect().Prepare("DELETE FROM " + tblName + " WHERE id=?")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	_, err = stmt.Exec(params["id"])
+	_, err = stmt.Exec(idVal)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Fprintf(res, "Person with ID = %s was deleted", params["id"])
+	fmt.Fprintf(res, "Person with ID = %s was deleted", idVal)
 }

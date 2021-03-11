@@ -121,3 +121,7 @@ func TestUpdatePerson(t *testing.T) {
 		}
 	}
 }
+
+func TestDeletePerson(t *testing.T) {
+
+}
